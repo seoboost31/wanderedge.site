@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WanderEdge — Travel Further Than the Guidebook</title>
+<meta name="description" content="WanderEdge covers trails, road trips, budget travel, gear, solo travel, and food & culture — field-tested notes for people who plan their own routes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#161C24;
+    --slate:#28323F;
+    --stone:#8B8375;
+    --bone:#F2ECDE;
+    --paper:#FBF8F1;
+    --rust:#B5502B;
+    --amber:#E0A458;
+    --teal:#3C5A5B;
+    --line: rgba(22,28,36,0.14);
+    --shadow: 0 24px 60px rgba(22,28,36,0.16);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Source Serif 4', serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.6;
+  }
+  h1,h2,h3{
+    font-family:'Big Shoulders Display', sans-serif;
+    text-transform:uppercase;
+    font-weight:700;
+    margin:0;
+    letter-spacing:0.01em;
+    line-height:0.94;
+  }
+  .mono{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--rust);
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{ max-width:1200px; margin:0 auto; padding:0 32px; }
+
+  .skip-link{
+    position:absolute; left:-999px; top:0;
+    background:var(--ink); color:var(--bone);
+    padding:10px 16px; z-index:999; border-radius:4px;
+  }
+  .skip-link:focus{ left:16px; top:16px; }
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--rust);
+    outline-offset:3px;
+  }
+
+  /* Header */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(251,248,241,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 32px;
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Big Shoulders Display', sans-serif;
+    font-size:1.5rem; font-weight:900; text-transform:uppercase;
+    text-decoration:none; color:var(--ink); letter-spacing:0.01em;
+  }
+  .logo .dot{ color:var(--rust); }
+  nav.links{ display:flex; gap:28px; list-style:none; margin:0; padding:0; }
+  nav.links a{
+    text-decoration:none; font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem; letter-spacing:0.05em; text-transform:uppercase;
+    color:var(--slate); border-bottom:1px solid transparent; padding-bottom:3px;
+  }
+  nav.links a:hover{ border-color:var(--rust); color:var(--ink); }
+  .nav-cta{
+    font-family:'JetBrains Mono', monospace; font-size:0.76rem;
+    background:var(--ink); color:var(--bone);
+    padding:10px 18px; text-decoration:none; letter-spacing:0.04em;
+  }
+  .nav-cta:hover{ background:var(--rust); }
+  .burger{ display:none; background:none; border:none; cursor:pointer; }
+
+  /* Hero */
+  .hero{ position:relative; }
+  .hero-media{ position:relative; height:78vh; min-height:520px; overflow:hidden; }
+  .hero-media img{
+    width:100%; height:100%; object-fit:cover;
+    filter:saturate(1.03) contrast(1.05);
+  }
+  .hero-media::after{
+    content:"";
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, rgba(22,28,36,0.15) 0%, rgba(22,28,36,0.75) 100%);
+  }
+  .hero-copy{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:48px 32px 56px;
+    color:var(--bone);
+  }
+  .hero-copy-inner{ max-width:1200px; margin:0 auto; }
+  .coords{
+    display:inline-flex; gap:18px; align-items:center;
+    font-family:'JetBrains Mono', monospace; font-size:0.74rem;
+    color:var(--amber); margin-bottom:20px; letter-spacing:0.06em;
+  }
+  .compass{
+    width:16px; height:16px; border-radius:50%;
+    border:1.4px solid var(--amber); position:relative; flex:none;
+    animation: spin 14s linear infinite;
+  }
+  .compass::before{
+    content:""; position:absolute; left:50%; top:1px;
+    width:0; height:0; transform:translateX(-50%);
+    border-left:2.5px solid transparent; border-right:2.5px solid transparent;
+    border-bottom:5px solid var(--rust);
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .hero h1{
+    font-size:clamp(2.6rem, 6.4vw, 5.2rem);
+    color:var(--bone);
+  }
+  .hero h1 span{ color:var(--amber); }
+  .hero p.lede{
+    margin-top:20px; max-width:52ch; font-size:1.08rem;
+    color:rgba(242,236,222,0.88);
+    font-family:'Source Serif 4', serif;
+  }
+  .hero-actions{ display:flex; gap:14px; margin-top:30px; flex-wrap:wrap; }
+  .btn-primary{
+    background:var(--rust); color:var(--bone);
+    padding:14px 26px; text-decoration:none; font-size:0.92rem;
+    font-family:'JetBrains Mono', monospace; letter-spacing:0.03em;
+    box-shadow:var(--shadow); transition:transform .2s ease, background .2s ease;
+    display:inline-block;
+  }
+  .btn-primary:hover{ transform:translateY(-2px); background:var(--amber); color:var(--ink); }
+  .btn-ghost{
+    padding:14px 22px; text-decoration:none; font-size:0.92rem;
+    font-family:'JetBrains Mono', monospace;
+    border:1px solid rgba(242,236,222,0.5); color:var(--bone);
+  }
+  .btn-ghost:hover{ border-color:var(--bone); }
+
+  /* Trip log strip */
+  .strip{
+    background:var(--ink); color:var(--bone);
+    overflow:hidden; padding:13px 0;
+  }
+  .strip-track{
+    display:flex; gap:48px; white-space:nowrap; width:max-content;
+    animation: scroll-strip 30s linear infinite;
+  }
+  .strip-track span{
+    font-family:'JetBrains Mono', monospace; font-size:0.74rem;
+    letter-spacing:0.08em; text-transform:uppercase; opacity:0.72;
+  }
+  .strip-track span b{ color:var(--amber); font-weight:500; }
+  @keyframes scroll-strip{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  section{ padding:96px 0; }
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    gap:24px; margin-bottom:52px; flex-wrap:wrap;
+  }
+  .section-head h2{ font-size:clamp(2rem, 4vw, 3rem); max-width:16ch; }
+  .section-head p{ max-width:38ch; color:var(--slate); font-size:0.98rem; margin:12px 0 0; font-family:'Source Serif 4', serif;}
+
+  /* Route categories */
+  .routes{ display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .route{
+    background:var(--paper); padding:36px 30px; text-decoration:none; color:var(--ink);
+    min-height:210px; display:flex; flex-direction:column; justify-content:space-between;
+    transition:background .25s ease;
+  }
+  .route:hover{ background:var(--bone); }
+  .route .mono{ display:block; }
+  .route h3{ font-size:1.5rem; margin-top:22px; }
+  .route p{ font-size:0.9rem; color:var(--slate); margin:10px 0 0; font-family:'Source Serif 4', serif;}
+
+  /* Dispatches */
+  .dispatches{ display:grid; grid-template-columns:repeat(3,1fr); gap:26px; }
+  .dispatch{
+    border:1px solid var(--line); background:var(--paper);
+    transition:transform .2s ease, box-shadow .2s ease; overflow:hidden;
+  }
+  .dispatch:hover{ transform:translateY(-4px); box-shadow:var(--shadow); }
+  .dispatch-body{ padding:24px; }
+  .dispatch .mono{ color:var(--teal); }
+  .dispatch h3{
+    font-family:'Source Serif 4', serif; text-transform:none; font-weight:500;
+    font-size:1.18rem; margin-top:12px; line-height:1.35;
+  }
+  .dispatch p{ font-size:0.9rem; color:var(--slate); margin-top:10px; }
+  .dispatch .meta{ margin-top:16px; font-family:'JetBrains Mono', monospace; font-size:0.72rem; color:var(--stone); }
+
+  /* Field notes / method */
+  .field{
+    background:var(--slate); color:var(--bone);
+    display:grid; grid-template-columns:0.9fr 1.1fr; gap:48px; align-items:center;
+    padding:64px 48px;
+  }
+  .field .mono{ color:var(--amber); }
+  .field h2{ color:var(--bone); font-size:clamp(1.9rem,3.4vw,2.6rem); margin-top:14px; }
+  .field p{ color:rgba(242,236,222,0.78); margin-top:16px; max-width:44ch; font-family:'Source Serif 4', serif; }
+  .checklist{ list-style:none; margin:0; padding:0; display:grid; gap:18px; }
+  .checklist li{ display:flex; gap:16px; align-items:flex-start; border-top:1px solid rgba(242,236,222,0.16); padding-top:18px; }
+  .checklist li:first-child{ border-top:none; padding-top:0; }
+  .checklist .mark{ font-family:'JetBrains Mono', monospace; color:var(--rust); flex:none; }
+  .checklist h4{
+    font-family:'Big Shoulders Display', sans-serif; text-transform:uppercase; font-weight:700;
+    margin:0 0 4px; font-size:1.05rem; color:var(--bone);
+  }
+  .checklist span{ font-size:0.88rem; color:rgba(242,236,222,0.7); font-family:'Source Serif 4', serif; }
+
+  footer{ border-top:1px solid var(--line); padding:56px 0 34px; }
+  .foot-top{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:32px; padding-bottom:36px; border-bottom:1px solid var(--line); }
+  .foot-cols{ display:flex; gap:64px; flex-wrap:wrap; }
+  .foot-col h5{ font-family:'JetBrains Mono', monospace; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--rust); margin-bottom:14px; }
+  .foot-col ul{ list-style:none; margin:0; padding:0; display:grid; gap:9px; }
+  .foot-col a{ text-decoration:none; font-size:0.9rem; color:var(--ink); }
+  .foot-col a:hover{ color:var(--rust); }
+  .foot-bottom{ display:flex; justify-content:space-between; align-items:center; padding-top:24px; flex-wrap:wrap; gap:12px; }
+  .foot-bottom p{ margin:0; font-size:0.8rem; color:var(--stone); }
+  .foot-note{ font-size:0.78rem; color:var(--stone); max-width:60ch; }
+
+  @media (max-width: 900px){
+    .routes{ grid-template-columns:1fr 1fr; }
+    .dispatches{ grid-template-columns:1fr; }
+    .field{ grid-template-columns:1fr; padding:40px 26px; }
+    nav.links{ display:none; }
+    .nav-cta{ display:none; }
+    .burger{ display:block; }
+  }
+  @media (max-width: 560px){
+    .routes{ grid-template-columns:1fr; }
+    .wrap{ padding-left:20px; padding-right:20px; }
+    .hero-media{ height:88vh; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .strip-track{ animation:none; }
+    .compass{ animation:none; }
+    .dispatch, .btn-primary{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header>
+  <div class="nav wrap" style="padding-left:0; padding-right:0;">
+    <a href="#top" class="logo">Wander<span class="dot">Edge</span></a>
+    <ul class="links">
+      <li><a href="#routes">Routes</a></li>
+      <li><a href="#dispatches">Dispatches</a></li>
+      <li><a href="#field">Field Method</a></li>
+      <li><a href="#footer-about">About</a></li>
+    </ul>
+    <a class="nav-cta" href="#dispatches">Read latest →</a>
+    <button class="burger" aria-label="Open menu">☰</button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-media">
+      <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1400&q=80" alt="Sun setting behind a dramatic mountain ridge, seen from an exposed trail edge">
+      <div class="hero-copy">
+        <div class="hero-copy-inner">
+          <span class="coords"><span class="compass" aria-hidden="true"></span>46.8523°N · 8.0192°E — SOMEWHERE PAST THE LAST SIGNAL</span>
+          <h1>Travel to the <span>edge</span> of the map, not the middle of the feed.</h1>
+          <p class="lede">WanderEdge is field notes for people who plan their own routes — trails, road trips, budget travel, gear that earns its weight, and the food worth the detour.</p>
+          <div class="hero-actions">
+            <a class="btn-primary" href="#routes">Pick a route</a>
+            <a class="btn-ghost" href="#field">How we test this stuff</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRIP LOG STRIP -->
+  <div class="strip">
+    <div class="strip-track" aria-hidden="true">
+      <span>TRAILS</span><span>ROAD TRIPS</span><span>BUDGET TRAVEL</span><span>GEAR</span><span>SOLO TRAVEL</span><span>FOOD &amp; CULTURE</span><span><b>112</b> COUNTRIES LOGGED</span>
+      <span>TRAILS</span><span>ROAD TRIPS</span><span>BUDGET TRAVEL</span><span>GEAR</span><span>SOLO TRAVEL</span><span>FOOD &amp; CULTURE</span><span><b>112</b> COUNTRIES LOGGED</span>
+    </div>
+  </div>
+
+  <!-- ROUTES / CATEGORIES -->
+  <section id="routes">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Six ways out the door</h2>
+        <p>Every dispatch on WanderEdge sits on one of these routes — start wherever your next trip actually is.</p>
+      </div>
+      <div class="routes">
+        <a class="route" href="#dispatches"><span class="mono">On Foot</span><div><h3>Trails</h3><p>Day hikes to multi-day routes, rated honestly for difficulty.</p></div></a>
+        <a class="route" href="#dispatches"><span class="mono">By Car</span><div><h3>Road Trips</h3><p>Routes built around fuel stops, not just scenic overlooks.</p></div></a>
+        <a class="route" href="#dispatches"><span class="mono">On A Budget</span><div><h3>Budget Travel</h3><p>Real cost breakdowns from trips we actually took.</p></div></a>
+        <a class="route" href="#dispatches"><span class="mono">Kit List</span><div><h3>Gear</h3><p>What survived the trip, and what got left in a hostel bin.</p></div></a>
+        <a class="route" href="#dispatches"><span class="mono">Going Alone</span><div><h3>Solo Travel</h3><p>Safety, logistics, and the upside nobody warns you about.</p></div></a>
+        <a class="route" href="#dispatches"><span class="mono">At The Table</span><div><h3>Food &amp; Culture</h3><p>Meals and customs worth planning a whole day around.</p></div></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- DISPATCHES -->
+  <section id="dispatches">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Latest dispatches</h2>
+        <p>Short, specific field reports — written after the trip, not instead of it.</p>
+      </div>
+      <div class="dispatches">
+        <article class="dispatch">
+          <div class="dispatch-body">
+            <span class="mono">Trails</span>
+            <h3>The ridge walk everyone skips for the viewpoint next door</h3>
+            <p>Same summit, a third of the crowd, and a much better descent.</p>
+            <div class="meta">7 MIN READ — ELEV. 2,340M</div>
+          </div>
+        </article>
+        <article class="dispatch">
+          <div class="dispatch-body">
+            <span class="mono">Budget Travel</span>
+            <h3>What two weeks in the Balkans actually cost us</h3>
+            <p>A full ledger, city by city, with the three splurges worth repeating.</p>
+            <div class="meta">9 MIN READ — 14 DAYS</div>
+          </div>
+        </article>
+        <article class="dispatch">
+          <div class="dispatch-body">
+            <span class="mono">Gear</span>
+            <h3>The one packing cube upgrade that changed everything</h3>
+            <p>Not sponsored, not glamorous — just the fix that stuck after 30 trips.</p>
+            <div class="meta">5 MIN READ — CARRY-ON ONLY</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIELD METHOD -->
+  <section id="field">
+    <div class="wrap">
+      <div class="field">
+        <div>
+          <span class="mono">Our approach</span>
+          <h2>We only publish what we've actually walked, driven, or eaten.</h2>
+          <p>No stock-photo listicles. Every dispatch follows the same field process before it goes live.</p>
+        </div>
+        <ol class="checklist">
+          <li><span class="mark">01</span><div><h4>Go there first</h4><span>Every route is walked or driven by someone on the team before we write about it.</span></div></li>
+          <li><span class="mark">02</span><div><h4>Log the real cost</h4><span>Prices, times, and effort level as they actually were — not the brochure version.</span></div></li>
+          <li><span class="mark">03</span><div><h4>Flag the trade-off</h4><span>Every recommendation comes with what you give up to take it.</span></div></li>
+          <li><span class="mark">04</span><div><h4>Recheck before republishing</h4><span>Routes and prices get revisited so old dispatches don't quietly go stale.</span></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="footer-about">
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <a href="#top" class="logo">Wander<span class="dot">Edge</span></a>
+        <p class="foot-note" style="margin-top:14px;">Field notes on trails, road trips, budget travel, gear, solo travel, and food &amp; culture — written by people who took the trip.</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h5>Routes</h5>
+          <ul>
+            <li><a href="#routes">Trails</a></li>
+            <li><a href="#routes">Road Trips</a></li>
+            <li><a href="#routes">Budget Travel</a></li>
+            <li><a href="#routes">Gear</a></li>
+          </ul>
+        </div>
+        <div class="foot-col">
+          <h5>Site</h5>
+          <ul>
+            <li><a href="#dispatches">Dispatches</a></li>
+            <li><a href="#field">Field Method</a></li>
+            <li><a href="#footer-about">About</a></li>
+            <li><a href="#top">Home</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>© 2026 WanderEdge. All rights reserved.</p>
+      <p class="foot-note">WanderEdge publishes general travel and lifestyle content only. No casino, gambling, or adult content is hosted or promoted on this site.</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
